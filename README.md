@@ -1,8 +1,6 @@
 # 🕵️‍♀️ Face Finder: A Free, Local Face Clustering Engine
 
-<table>
-<tr>
-<td width="60%">
+<img width="500" alt="Screenshot 2026-08-10 at 12 58 37 AM" align="right" src="https://github.com/user-attachments/assets/8887a286-e8b6-4319-960c-99ba3c4736fc" />
 
 Last year, I changed my trusty phone of 7+ years: archiving **100K+** photos to a local disk 😅!
 And while my iPhone may have built-in People features now, my laptop does not. All I wanted was to choose a
@@ -15,15 +13,7 @@ You can name them, merge duplicates, and even search for photos of 2+ people tog
 
 **100% local, and nothing leaves the container. Neat, huh?** 🔒📴
 
-</td>
-<td width="40%">
-
-<img width="450" alt="Screenshot 2026-08-10 at 12 58 37 AM" src="https://github.com/user-attachments/assets/8887a286-e8b6-4319-960c-99ba3c4736fc" />
-<p><em>As you can probably tell from my terrible naming skills, these AREN'T actually my friends.</em></p>
-
-</td>
-</tr>
-</table>
+<sub><em>As you can probably tell from my terrible naming skills, the people in the screenshot AREN'T actually my friends!</em></sub>
 
 ## ✨ What you need before starting
 
