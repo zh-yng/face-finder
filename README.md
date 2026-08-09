@@ -79,6 +79,24 @@ Go to **http://localhost:8000** in your browser.
   full photo with a bounding box drawn around the selected person
   (highlighted) and any other detected faces (dimmed).
 
+## 6b. Multi-face search ("Find together")
+
+Want photos containing several specific people at once — not just one?
+
+1. Open any person's gallery.
+2. Click **Find together…**. A panel opens listing every other identified
+   person as a chip.
+3. Click chips to pick who else must appear alongside the person whose
+   gallery you're in. Selected chips highlight.
+4. Click **Apply filter**. The gallery narrows to only photos where *all*
+   selected people appear together — an exact match, not "any of them."
+   An active-filter bar appears above the grid showing who's selected.
+5. Click **Clear filter** (in the bar, or **Clear** inside the panel) to
+   drop back to that person's full gallery.
+
+This runs entirely off already-indexed faces — no rescan or recluster
+needed, works instantly against whatever's currently in the database.
+
 ## 7. Adding new photos later
 
 Drop new files into the same folder, then click **Scan library** again.
@@ -105,7 +123,7 @@ docker-compose.yml     # orchestration: ro photo mount, rw data volume
 Dockerfile              # build-time model download, runtime = zero egress
 requirements.txt
 app/
-  main.py               # FastAPI routes (scan/cluster/people/photos)
+  main.py               # FastAPI routes (scan/cluster/people/photos/together)
   db.py                 # SQLite + sqlite-vec schema and connection
   ingest.py             # traversal, hashing, EXIF fix, thumbnailing
   face_engine.py         # SCRFD detection + ArcFace embedding (InsightFace)
