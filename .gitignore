@@ -179,3 +179,29 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# ==========================================
+# Application-Specific Storage & Data
+# ==========================================
+# Embedded database & vector indices
+*.db
+*.sqlite
+*.sqlite3
+
+# Cached face thumbnails & generated avatars
+/data/
+/thumbnails/
+/cache/
+
+# Local test media (prevent committing user photos during local testing)
+/photos/
+/test_images/
+*.heic
+
+# Docker & Environment secrets/overrides
+.env.local
+docker-compose.override.yml
+
+# ONNX / InsightFace cached model weights (downloaded on container boot)
+/models/*.onnx
+~/.insightface/

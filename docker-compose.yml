@@ -1,0 +1,26 @@
+services:
+  face-cluster-engine:
+    build: .
+    image: local-face-cluster-engine:latest
+    container_name: face-cluster-engine
+    ports:
+      - "8000:8000"
+    volumes:
+      # Your photo library — mounted READ-ONLY. Change the left-hand side
+      # (before the colon) to point at your own folder.
+      - ${PHOTOS_HOST_DIR:-./photos}:/data/photos:ro
+      # App database + thumbnails — persists between restarts.
+      - face_app_data:/data/app_data
+    environment:
+      - PHOTOS_DIR=/data/photos
+      - APP_DATA_DIR=/data/app_data
+      - DB_PATH=/data/app_data/faces.db
+    # Runtime network is intentionally isolated. FR "Zero Data Leakage":
+    # the container can serve the UI on the published port but cannot
+    # initiate outbound connections. Flip to "bridge" only if you need
+    # to debug — the app never calls out regardless.
+    network_mode: bridge
+    restart: unless-stopped
+
+volumes:
+  face_app_data:

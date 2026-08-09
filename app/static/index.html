@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Face Index</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◍</span>
+      <span class="brand-name">Face Index</span>
+      <span class="brand-sub">runs entirely on this machine</span>
+    </div>
+    <div class="actions">
+      <div id="scanStatus" class="status-pill idle">idle</div>
+      <button id="scanBtn" class="btn">Scan library</button>
+      <button id="clusterBtn" class="btn btn-outline">Re-cluster</button>
+    </div>
+  </header>
+
+  <main id="peopleView" class="view">
+    <div id="peopleEmpty" class="empty-state hidden">
+      <p>No people found yet.</p>
+      <p class="empty-sub">Run a scan, then re-cluster, to populate this grid.</p>
+    </div>
+    <div id="peopleGrid" class="people-grid"></div>
+  </main>
+
+  <main id="galleryView" class="view hidden">
+    <div class="gallery-header">
+      <button id="backBtn" class="btn btn-outline">&larr; All people</button>
+      <input id="nameInput" class="name-input" placeholder="Unnamed person" />
+      <button id="saveNameBtn" class="btn">Save name</button>
+      <button id="mergeModeBtn" class="btn btn-outline">Merge into…</button>
+    </div>
+    <div id="galleryGrid" class="gallery-grid"></div>
+  </main>
+
+  <div id="photoModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close">&times;</button>
+      <div class="photo-wrap">
+        <img id="modalImg" />
+        <svg id="bboxLayer"></svg>
+      </div>
+      <div id="modalFaceInfo" class="modal-face-info"></div>
+    </div>
+  </div>
+
+  <div id="mergeModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content merge-content">
+      <button id="closeMergeModal" class="modal-close">&times;</button>
+      <h3>Merge current person into…</h3>
+      <p class="empty-sub">Pick the person to keep. This person's faces move into them and this card disappears.</p>
+      <div id="mergeList" class="merge-list"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
