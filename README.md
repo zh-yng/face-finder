@@ -1,6 +1,6 @@
 # 🕵️‍♀️ Face Finder: A Free, Local Face Clustering Engine
 
-<img width="500" alt="Screenshot 2026-08-10 at 12 58 37 AM" align="right" src="https://github.com/user-attachments/assets/8887a286-e8b6-4319-960c-99ba3c4736fc" />
+<img width="480" alt="Screenshot 2026-08-10 at 12 58 37 AM" align="right" src="https://github.com/user-attachments/assets/8887a286-e8b6-4319-960c-99ba3c4736fc" />
 
 Last year, I changed my trusty phone of 7+ years: archiving **100K+** photos to a local disk 😅!
 And while my iPhone may have built-in People features now, my laptop does not. All I wanted was to choose a
