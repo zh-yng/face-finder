@@ -20,12 +20,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pre-fetch the InsightFace "buffalo_l" model pack (SCRFD detector + ArcFace
+# Pre-fetch the InsightFace "buffalo_sc" model pack (SCRFD detector + ArcFace
 # recognizer) at BUILD time so the container needs zero network access at
 # runtime. This is the only step in the whole image that touches the network.
 RUN python - <<'PY'
 import insightface
-app = insightface.app.FaceAnalysis(name="buffalo_l")
+app = insightface.app.FaceAnalysis(name="buffalo_sc")
 app.prepare(ctx_id=-1)
 print("Model pack cached at build time.")
 PY

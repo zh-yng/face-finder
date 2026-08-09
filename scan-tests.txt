@@ -1,3 +1,13 @@
-> buffalo_l, 590 images (u-z)
-start: 1786284998.399533
-end: 1786285994.045289
+> buffalo_l, 590 images (u-z, lfw-deepfunneled)
+start: 1786284998.399533 s
+end: 1786285994.045289 s
+elapsed: 995.645756 s
+
+> buffalo_sc, 590 images (u-z, lfw-deepfunneled)
+start: 1786286304.7531335 s
+end: 1786286438.149971 s
+elapsed: 133.3968375 s
+
+(995645.76 − 133396.84) / 995645.76
+= 0.866
+= 86.6% reduced time of scan

@@ -1,6 +1,6 @@
 """FR-2.1 / FR-2.2 / FR-2.3: face detection + 512-d embedding generation.
 
-Wraps InsightFace's "buffalo_l" pack, which bundles:
+Wraps InsightFace's "buffalo_sc" pack, which bundles:
   - detector: SCRFD  (produces bbox + 5-point landmarks + det_score)
   - recognizer: ArcFace (produces a 512-d L2-normalizable embedding)
 
@@ -25,7 +25,7 @@ def _get_app() -> FaceAnalysis:
     if _app is None:
         with _lock:
             if _app is None:
-                _app = FaceAnalysis(name="buffalo_l")
+                _app = FaceAnalysis(name="buffalo_sc")
                 # ctx_id=-1 -> CPU inference, matches the NFR CPU-only target.
                 _app.prepare(ctx_id=-1, det_size=(640, 640))
     return _app
