@@ -13,6 +13,20 @@ let scanPollTimer = null;
 let togetherSelected = new Set();
 let togetherActive = false;
 
+// ---------------------------------------------------------------- views ---
+function switchView(toHide, toShow) {
+  toHide.classList.add("view-fade-out");
+  setTimeout(() => {
+    toHide.classList.add("hidden");
+    toHide.classList.remove("view-fade-out");
+    toShow.classList.remove("hidden");
+    toShow.classList.add("view-fade-out");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toShow.classList.remove("view-fade-out"));
+    });
+  }, 180);
+}
+
 // ---------------------------------------------------------------- toast ---
 function toast(msg) {
   const el = $("#toast");
@@ -140,8 +154,7 @@ async function openGallery(clusterId) {
   $("#togetherActiveBar").classList.add("hidden");
   const person = peopleCache.find((p) => p.id === clusterId);
   $("#nameInput").value = person?.person_name || "";
-  peopleView.classList.add("hidden");
-  galleryView.classList.remove("hidden");
+  switchView(peopleView, galleryView);
   await refreshGallery();
 }
 
@@ -251,8 +264,7 @@ async function refreshTogetherResults() {
 }
 
 $("#backBtn").addEventListener("click", () => {
-  galleryView.classList.add("hidden");
-  peopleView.classList.remove("hidden");
+  switchView(galleryView, peopleView);
   loadPeople();
 });
 
@@ -285,8 +297,7 @@ $("#mergeModeBtn").addEventListener("click", async () => {
       });
       toast("Merged");
       $("#mergeModal").classList.add("hidden");
-      galleryView.classList.add("hidden");
-      peopleView.classList.remove("hidden");
+      switchView(galleryView, peopleView);
       await loadPeople();
     });
     list.appendChild(row);
