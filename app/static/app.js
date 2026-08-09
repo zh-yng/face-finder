@@ -96,14 +96,36 @@ async function loadPeople() {
     const card = document.createElement("div");
     card.className = "person-card";
     card.innerHTML = `
-      <span class="tab">#${p.id}</span>
-      <img class="thumb" src="/api/thumbnail/${p.representative_face_id}" />
+      <div class="thumb-stack">
+        <img class="thumb thumb-1" src="/api/thumbnail/${p.representative_face_id}" />
+      </div>
       <div class="meta">
         <div class="name ${p.person_name ? "" : "unnamed"}">${p.person_name || "Unnamed"}</div>
         <div class="count">${p.face_count} face${p.face_count === 1 ? "" : "s"}</div>
       </div>`;
     card.addEventListener("click", () => openGallery(p.id));
+    card.addEventListener("mouseenter", () => loadFanThumbs(p, card), { once: true });
     peopleGrid.appendChild(card);
+  }
+}
+
+// fan out up to 3 face thumbs on hover
+async function loadFanThumbs(person, card) {
+  try {
+    const faces = await api(`/api/people/${person.id}/faces`);
+    const stack = card.querySelector(".thumb-stack");
+    const extras = faces
+      .map((f) => f.face_id)
+      .filter((id) => id !== person.representative_face_id)
+      .slice(0, 2);
+    extras.forEach((faceId, i) => {
+      const img = document.createElement("img");
+      img.className = `thumb thumb-${i + 2}`;
+      img.src = `/api/thumbnail/${faceId}`;
+      stack.appendChild(img);
+    });
+  } catch (e) {
+    // silent — fan-out is decorative, card still works without it
   }
 }
 
