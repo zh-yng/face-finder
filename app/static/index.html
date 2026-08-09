@@ -37,7 +37,25 @@
       <input id="nameInput" class="name-input" placeholder="Unnamed person" />
       <button id="saveNameBtn" class="btn">Save name</button>
       <button id="mergeModeBtn" class="btn btn-outline">Merge into…</button>
+      <button id="togetherBtn" class="btn btn-outline">Find together…</button>
     </div>
+
+    <div id="togetherPanel" class="together-panel hidden">
+      <div class="together-panel-head">
+        <span>Show photos with this person and…</span>
+        <button id="closeTogetherPanel" class="modal-close small">&times;</button>
+      </div>
+      <div id="togetherList" class="together-list"></div>
+      <div class="together-panel-actions">
+        <button id="applyTogetherBtn" class="btn">Apply filter</button>
+        <button id="clearTogetherBtn" class="btn btn-outline">Clear</button>
+      </div>
+    </div>
+    <div id="togetherActiveBar" class="together-active-bar hidden">
+      <span id="togetherActiveLabel"></span>
+      <button id="clearTogetherBar" class="btn btn-outline">Clear filter</button>
+    </div>
+
     <div id="galleryGrid" class="gallery-grid"></div>
   </main>
 

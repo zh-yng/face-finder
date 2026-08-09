@@ -160,6 +160,59 @@ def remove_face(face_id: int):
     return {"status": "ok"}
 
 
+@app.get("/api/photos/intersect")
+def photos_intersect(cluster_ids: str):
+    """FR: given a comma-separated list of cluster ids, return every photo
+    that contains a non-removed face from ALL of those clusters — used to
+    find photos where several specific people appear together."""
+    try:
+        ids = [int(x) for x in cluster_ids.split(",") if x.strip()]
+    except ValueError:
+        raise HTTPException(400, "cluster_ids must be a comma-separated list of integers.")
+    ids = sorted(set(ids))
+    if not ids:
+        raise HTTPException(400, "cluster_ids required.")
+
+    conn = db.get_conn()
+    placeholders = ",".join("?" for _ in ids)
+    photo_rows = conn.execute(
+        f"""
+        SELECT f.photo_id
+        FROM faces f
+        WHERE f.cluster_id IN ({placeholders}) AND f.removed = 0
+        GROUP BY f.photo_id
+        HAVING COUNT(DISTINCT f.cluster_id) = ?
+        """,
+        (*ids, len(ids)),
+    ).fetchall()
+    photo_ids = [r["photo_id"] for r in photo_rows]
+    if not photo_ids:
+        return []
+
+    ph_placeholders = ",".join("?" for _ in photo_ids)
+    photos = conn.execute(
+        f"SELECT * FROM photos WHERE id IN ({ph_placeholders})", photo_ids
+    ).fetchall()
+    faces = conn.execute(
+        f"""
+        SELECT f.id AS face_id, f.photo_id, f.cluster_id, f.thumbnail_path
+        FROM faces f
+        WHERE f.photo_id IN ({ph_placeholders})
+          AND f.cluster_id IN ({placeholders})
+          AND f.removed = 0
+        """,
+        (*photo_ids, *ids),
+    ).fetchall()
+    faces_by_photo = {}
+    for f in faces:
+        faces_by_photo.setdefault(f["photo_id"], []).append(dict(f))
+
+    return [
+        {"photo": dict(p), "faces": faces_by_photo.get(p["id"], [])}
+        for p in photos
+    ]
+
+
 # ----------------------------------------------------------------- photos --
 
 @app.get("/api/photos/{photo_id}")

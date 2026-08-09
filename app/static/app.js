@@ -10,6 +10,8 @@ const scanStatusEl = $("#scanStatus");
 let currentClusterId = null;
 let peopleCache = [];
 let scanPollTimer = null;
+let togetherSelected = new Set();
+let togetherActive = false;
 
 // ---------------------------------------------------------------- toast ---
 function toast(msg) {
@@ -132,6 +134,10 @@ async function loadFanThumbs(person, card) {
 // -------------------------------------------------------------- gallery ---
 async function openGallery(clusterId) {
   currentClusterId = clusterId;
+  togetherSelected = new Set();
+  togetherActive = false;
+  $("#togetherPanel").classList.add("hidden");
+  $("#togetherActiveBar").classList.add("hidden");
   const person = peopleCache.find((p) => p.id === clusterId);
   $("#nameInput").value = person?.person_name || "";
   peopleView.classList.add("hidden");
@@ -140,6 +146,10 @@ async function openGallery(clusterId) {
 }
 
 async function refreshGallery() {
+  if (togetherActive) {
+    await refreshTogetherResults();
+    return;
+  }
   const faces = await api(`/api/people/${currentClusterId}/faces`);
   galleryGrid.innerHTML = "";
   for (const f of faces) {
@@ -155,6 +165,87 @@ async function refreshGallery() {
       toast("Removed from cluster");
       refreshGallery();
     });
+    galleryGrid.appendChild(card);
+  }
+}
+
+// ------------------------------------------------------- find together ---
+$("#togetherBtn").addEventListener("click", () => {
+  const panel = $("#togetherPanel");
+  panel.classList.toggle("hidden");
+  if (!panel.classList.contains("hidden")) renderTogetherOptions();
+});
+$("#closeTogetherPanel").addEventListener("click", () => {
+  $("#togetherPanel").classList.add("hidden");
+});
+
+function renderTogetherOptions() {
+  const list = $("#togetherList");
+  list.innerHTML = "";
+  const others = peopleCache.filter((p) => p.id !== currentClusterId);
+  if (others.length === 0) {
+    list.innerHTML = `<p class="empty-sub">No other people to filter by yet.</p>`;
+    return;
+  }
+  for (const p of others) {
+    const chip = document.createElement("div");
+    chip.className = "together-option" + (togetherSelected.has(p.id) ? " selected" : "");
+    chip.innerHTML = `
+      <img src="/api/thumbnail/${p.representative_face_id}" />
+      <span>${p.person_name || "Unnamed"}</span>`;
+    chip.addEventListener("click", () => {
+      if (togetherSelected.has(p.id)) togetherSelected.delete(p.id);
+      else togetherSelected.add(p.id);
+      chip.classList.toggle("selected");
+    });
+    list.appendChild(chip);
+  }
+}
+
+$("#applyTogetherBtn").addEventListener("click", async () => {
+  if (togetherSelected.size === 0) {
+    toast("Pick at least one other person first");
+    return;
+  }
+  togetherActive = true;
+  $("#togetherPanel").classList.add("hidden");
+  const names = [...togetherSelected]
+    .map((id) => peopleCache.find((p) => p.id === id)?.person_name || "Unnamed")
+    .join(", ");
+  $("#togetherActiveLabel").textContent = `Showing photos with this person + ${names}`;
+  $("#togetherActiveBar").classList.remove("hidden");
+  await refreshGallery();
+});
+
+function clearTogetherFilter() {
+  togetherActive = false;
+  togetherSelected = new Set();
+  $("#togetherActiveBar").classList.add("hidden");
+  refreshGallery();
+}
+$("#clearTogetherBtn").addEventListener("click", clearTogetherFilter);
+$("#clearTogetherBar").addEventListener("click", clearTogetherFilter);
+
+async function refreshTogetherResults() {
+  const ids = [currentClusterId, ...togetherSelected].join(",");
+  galleryGrid.innerHTML = "";
+  let results;
+  try {
+    results = await api(`/api/photos/intersect?cluster_ids=${ids}`);
+  } catch (e) {
+    toast("Filter failed: " + e.message);
+    return;
+  }
+  if (results.length === 0) {
+    galleryGrid.innerHTML = `<p class="empty-sub">No photos found with everyone selected together.</p>`;
+    return;
+  }
+  for (const r of results) {
+    const face = r.faces.find((f) => f.cluster_id === currentClusterId) || r.faces[0];
+    const card = document.createElement("div");
+    card.className = "face-card";
+    card.innerHTML = `<img src="/api/thumbnail/${face.face_id}" />`;
+    card.querySelector("img").addEventListener("click", () => openPhotoModal(face));
     galleryGrid.appendChild(card);
   }
 }
@@ -230,7 +321,7 @@ function drawBoxes(detail) {
     rect.setAttribute("width", f.bbox_x2 - f.bbox_x1);
     rect.setAttribute("height", f.bbox_y2 - f.bbox_y1);
     rect.setAttribute("fill", "none");
-    rect.setAttribute("stroke", isCurrent ? "#e8a33d" : "#5a5f6a");
+    rect.setAttribute("stroke", isCurrent ? "#e2963f" : "#6f6152");
     rect.setAttribute("stroke-width", isCurrent ? 4 : 2);
     svg.appendChild(rect);
 
@@ -238,7 +329,7 @@ function drawBoxes(detail) {
       const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
       label.setAttribute("x", f.bbox_x1);
       label.setAttribute("y", Math.max(f.bbox_y1 - 8, 12));
-      label.setAttribute("fill", isCurrent ? "#e8a33d" : "#9a9ea8");
+      label.setAttribute("fill", isCurrent ? "#e2963f" : "#a8967d");
       label.setAttribute("font-size", "18");
       label.textContent = f.person_name;
       svg.appendChild(label);
