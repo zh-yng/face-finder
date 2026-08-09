@@ -13,7 +13,7 @@ You can name them, merge duplicates, and even search for photos of 2+ people tog
 
 **100% local, and nothing leaves the container. Neat, huh?** 🔒📴
 
-<sub><em>As you can probably tell from my terrible naming skills, the people in the screenshot AREN'T actually my friends!</em></sub>
+<em>P.S. You could probably tell from my terrible naming skills, but the images in the screenshot AREN'T actually mine! They come from the [lfw-deepfunneled](https://www.kaggle.com/datasets/jessicali9530/lfw-dataset?select=lfw-deepfunneled) dataset on Kaggle.</em>
 
 ## ✨ What you need before starting
 
