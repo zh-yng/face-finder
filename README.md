@@ -6,7 +6,7 @@ friend's face and wish them happy birthday 🎉 without uploading
 my entire life to the cloud!
 
 So... I built Face Finder. Just provide a directory, and buffalo_sc will
-detect + cluster every face: allowing you to pick from faces instead of filesystem hell.
+detect + cluster every face: allowing you to pick from the people you know instead of filesystem hell.
 You can name them, merge duplicates, and even search for photos of 2+ people together!
 
 **100% local, and nothing leaves the container. Neat, huh?** 🔒📴
