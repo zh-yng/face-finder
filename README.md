@@ -15,7 +15,7 @@ You can name them, merge duplicates, and even search for photos of 2+ people tog
 
 * 🐳 Docker Desktop (macOS/Windows) or Docker Engine + Compose plugin (Linux).
 * 💪 At least 4 CPU cores / 4 GB RAM free for Docker.
-* 🖼️ A local folder of photos you want indexed.
+* 🖼️ A local folder (with subfolders? sure!) of photos you want to label by face.
 
 ## 1️⃣ Get the project onto your machine
 
