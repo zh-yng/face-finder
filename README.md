@@ -2,7 +2,7 @@
 
 # 🕵️‍♀️ Face Finder
 
-### A Free Face Clustering Engine for Local Photos
+### A Free, ML-Powered Face Clustering Engine for Local Photos
 
 *Never miss a birthday post again!*
 
