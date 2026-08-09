@@ -1,4 +1,16 @@
-# 🕵️‍♀️ Face Finder: A Free, Local Face Clustering Engine
+<div align="center">
+
+# 🕵️‍♀️ Face Finder
+
+### A Free Face Clustering Engine for Local Photos
+
+*Never miss a birthday post again!*
+
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Made with](https://img.shields.io/badge/made%20with-%E2%9D%A4%EF%B8%8F%20and%20%F0%9F%A7%AA-orange)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
+</div>
 
 <img width="480" alt="Screenshot 2026-08-10 at 12 58 37 AM" align="right" src="https://github.com/user-attachments/assets/8887a286-e8b6-4319-960c-99ba3c4736fc" />
 
