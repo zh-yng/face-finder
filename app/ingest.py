@@ -6,6 +6,7 @@ FR-1.3 EXIF orientation correction before detection
 FR-1.4 hash + mtime based de-duplication so re-scans skip unchanged files
 FR-2.4 150x150 JPEG thumbnail per valid face
 """
+import datetime
 import os
 import sqlite3
 import struct
@@ -26,6 +27,10 @@ APP_DATA_DIR = os.environ.get("APP_DATA_DIR", "/data/app_data")
 THUMB_DIR = os.path.join(APP_DATA_DIR, "thumbnails")
 THUMB_SIZE = 150
 
+WORKER_COUNT = int(
+    os.environ.get("FACE_SCAN_WORKERS", str(min(4, max(1, (os.cpu_count() or 4) - 1))))
+)
+
 # In-memory progress tracker, polled by GET /api/scan/status
 SCAN_STATE = {
     "running": False,
@@ -40,6 +45,8 @@ SCAN_STATE = {
     "finished_at": None,
 }
 
+def _ts():
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
 
 def _hash_file(path: Path) -> str:
     """FR-1.4: fast content hash. Uses blake3 if available, else sha256."""
@@ -142,16 +149,14 @@ def _process_one_photo(conn: sqlite3.Connection, path: Path, photos_root: Path):
 
 
 def run_scan(photos_dir: str):
-    """FR-1.1: entry point for a full/incremental scan. Meant to run in a
-    background task; updates SCAN_STATE as it goes so the UI can poll.
-    """
     if SCAN_STATE["running"]:
         return
     SCAN_STATE.update(
         running=True, total_found=0, processed=0, new_photos=0,
         skipped_unchanged=0, faces_found=0, errors=0, last_error=None,
-        started_at=time.time(), finished_at=None,
+        started_at=time.time(), finished_at=None, workers=WORKER_COUNT,
     )
+    print(f"[scan] started at {_ts()}", flush=True)
     conn = db.get_conn()
     root = Path(photos_dir)
     try:
@@ -169,3 +174,10 @@ def run_scan(photos_dir: str):
     finally:
         SCAN_STATE["running"] = False
         SCAN_STATE["finished_at"] = time.time()
+        elapsed_ms = (SCAN_STATE["finished_at"] - SCAN_STATE["started_at"]) * 1000
+        print(
+            f"[scan] finished at {_ts()} — took {elapsed_ms:.0f}ms, "
+            f"{SCAN_STATE['processed']} files, {SCAN_STATE['new_photos']} new, "
+            f"{SCAN_STATE['faces_found']} faces",
+            flush=True,
+        )

@@ -79,7 +79,8 @@ function renderScanStatus(s) {
     scanStatusEl.textContent = `done, ${s.errors} error(s)`;
   } else if (s.finished_at) {
     scanStatusEl.className = "status-pill done";
-    scanStatusEl.textContent = "up to date";
+    const ms = Math.round((s.finished_at - s.started_at) * 1000);
+    scanStatusEl.textContent = `done in ${ms}ms`;
   } else {
     scanStatusEl.className = "status-pill idle";
     scanStatusEl.textContent = "idle";
