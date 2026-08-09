@@ -1,7 +1,5 @@
 # 🕵️‍♀️ Face Finder: A Free, Local Face Clustering Engine
 
-## 🎂 Why this exists
-
 Last year, I changed my trusty phone of 7+ years: archiving **100K+** photos to a local disk 😅!
 And while my iPhone may have built-in People features now, my laptop does not. All I wanted was to choose a
 friend's face and wish them happy birthday 🎉 without uploading
