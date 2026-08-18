@@ -15,7 +15,7 @@ So... I built Face Finder. Just provide a directory, and buffalo_sc will
 detect + cluster every face: allowing you to pick from the people you know instead of filesystem hell.
 You can name them, merge duplicates, and even search for photos of 2+ people together!
 
-**100% local, and nothing leaves the container. Neat, huh?** 🔒📴
+**It's built to run locally, so nothing ever leaves the container.** 🔒📴
 
 <em>P.S. You could probably tell from my terrible naming skills, but the images in the screenshot AREN'T actually mine! They come from the [lfw-deepfunneled](https://www.kaggle.com/datasets/jessicali9530/lfw-dataset?select=lfw-deepfunneled) dataset on Kaggle.</em>
 
