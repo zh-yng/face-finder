@@ -27,7 +27,7 @@ You can name them, merge duplicates, and even search for photos of 2+ people tog
 
 ## 1️⃣ Get the project onto your machine
 
-Unzip the project archive you were given, or `git clone` it, then open a
+Clone the repository, then open a
 terminal in the project's root folder — the one containing `docker-compose.yml`.
 
 ## 2️⃣ Point it at your photo folder
